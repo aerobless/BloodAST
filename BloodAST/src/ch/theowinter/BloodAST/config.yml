@@ -7,6 +7,8 @@ EnableStatisticsModule: true
 
 #GENERAL SETTINGS
 #----------------------
+#Set to false once your happy with your configuration and certain everything works. --> less messages in console
+LogDebugMessagesToConsole: true
 #Needs to be unique in a multi-server environment. E.g. bcloud_survival
 ServerName: yourservername
 #The URL of the bloodAST folder that you put on your webserver E.g. http://yourhost.com/bloodAST/

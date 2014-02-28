@@ -2,7 +2,11 @@ package ch.theowinter.BloodAST;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import ch.theowinter.BloodAST.modules.StatisticsManager;
+
 public class MainBloodAST extends JavaPlugin{
+	//Used so that sub-classes can use methods in here
+	MainBloodAST mainClass = this;
 
 	//Global Parameters
 	private String serverName;
@@ -21,7 +25,9 @@ public class MainBloodAST extends JavaPlugin{
 	 		
 	 		//Enabling specific modules:
 			if (MainBloodAST.this.getConfig().getBoolean("EnableStatisticsModule")){
-			 
+				StatisticsManager statManager = new StatisticsManager(mainClass);
+				statManager.StatsTracker();
+				logEvent("Statistics-Module successfully loaded.", false);
 			}
 	    }
 	 
@@ -31,6 +37,7 @@ public class MainBloodAST extends JavaPlugin{
 	    } 
 	    
 	    public void loadMainSettings(){
+	    	debugMode = MainBloodAST.this.getConfig().getBoolean("LogDebugMessagesToConsole");
 	 		serverName = MainBloodAST.this.getConfig().getString("ServerName");
 	 		webServerURL = MainBloodAST.this.getConfig().getString("WebServerURL");
 	 		schedulerPeriod = MainBloodAST.this.getConfig().getInt("SchedulerPeriod");
@@ -45,7 +52,7 @@ public class MainBloodAST extends JavaPlugin{
 	     */
 	    public void logEvent(String input, boolean forceLog){
 	    	if (debugMode==true || forceLog==true){
-			 	getLogger().info(input);
+			 	getLogger().info("BloodAST: "+input);
 	    	}
 	    }
 
