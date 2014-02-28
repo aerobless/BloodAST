@@ -1,14 +1,11 @@
 package ch.theowinter.BloodAST;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import ch.theowinter.BloodAST.modules.RewardManager;
 import ch.theowinter.BloodAST.modules.StatisticsManager;
 
 public class MainBloodAST extends JavaPlugin{
-	//test auto complile on jenkins
 	//Used so that sub-classes can use methods in here
 	MainBloodAST mainClass = this;
 
@@ -26,8 +23,9 @@ public class MainBloodAST extends JavaPlugin{
 			logEvent("Attempting to start ADVANCED SERVER TOOLS provided by bCloud (http://blood-cloud.com)", true);
 	 		this.saveDefaultConfig();
 	 		loadMainSettings();
+	 		loadCommands();
 	 		
-	 		//Enabling specific modules:
+	 		//Enabling specific modules
 			if (MainBloodAST.this.getConfig().getBoolean("EnableStatisticsModule")){
 				StatisticsManager statManager = new StatisticsManager(mainClass);
 				statManager.StatsTracker();
@@ -45,20 +43,15 @@ public class MainBloodAST extends JavaPlugin{
 	    	logEvent("BloodAST successfully exited", true);
 	    } 
 	    
-	    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
-	    	if(cmd.getName().equalsIgnoreCase("basic")){ // If the player typed /basic then do the following...
-	    		sender.sendMessage("hihihi");
-	    		return true;
-	    	}
-	    	
-	    	return false; 
-	    }
-	    
 	    public void loadMainSettings(){
 	    	debugMode = MainBloodAST.this.getConfig().getBoolean("LogDebugMessagesToConsole");
 	 		serverName = MainBloodAST.this.getConfig().getString("ServerName");
 	 		webServerURL = MainBloodAST.this.getConfig().getString("WebServerURL");
 	 		schedulerPeriod = MainBloodAST.this.getConfig().getInt("SchedulerPeriod");
+	    }
+	    
+	    public void loadCommands(){
+	    	getCommand("basic").setExecutor(new BloodASTCommandExecutor(this));
 	    }
 	    
 	    /**

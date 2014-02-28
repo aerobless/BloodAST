@@ -82,6 +82,7 @@ public class StatisticsManager {
 		out.flush();
 		out.close();
 		BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		//TODO: fix so it's not longer yellow
 		String line = "";
 		while ((line = in.readLine()) != null) {
 		}
