@@ -8,6 +8,7 @@ import ch.theowinter.BloodAST.modules.RewardManager;
 import ch.theowinter.BloodAST.modules.StatisticsManager;
 
 public class MainBloodAST extends JavaPlugin{
+	//test auto complile on jenkins
 	//Used so that sub-classes can use methods in here
 	MainBloodAST mainClass = this;
 
