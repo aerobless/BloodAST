@@ -13,53 +13,47 @@ import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import ch.theowinter.BloodAST.MainBloodAST;
 
 public class StatisticsManager {
-	//Declares your plugin variable
 	private MainBloodAST main;
 	
 	//Loaded Parameters
-	String servername = "";
-	String uploadURL = "";
-	String rewardText = "";
-	int rewardPeriod = 0;
-	
-	//Temporary Variables
-	HashMap<Player, Integer> onlinePlayers = new HashMap<Player, Integer>();
+	int statsUpdatePeriod = 4;
 
-    public StatisticsManager(String aServername, String aUploadURL,
-			String aRewardText, int aRewardPeriod, MainBloodAST mainClass) {
+    public StatisticsManager(MainBloodAST mainClass) {
 		super();
-		servername = aServername;
-		uploadURL = aUploadURL;
-		rewardText = aRewardText;
-		rewardPeriod = aRewardPeriod;
 		main = mainClass;
+		statsUpdatePeriod = main.getConfig().getInt("StatisticsUpdatePeriod");
 	}
-
+    
+    public void StatsTracker(){
+    	main.getServer().getScheduler().scheduleSyncDelayedTask(main, new Runnable() {
+            @Override
+            public void run() {
+            	checkStats();
+            	StatsTracker();
+            }
+        }, statsUpdatePeriod*60*20L  ); //20L = 1second
+    }
+    
 	//Getting players from single bukkit server
     public void checkStats(){
     	Player[] currentlyOnlinePlayerArray = Bukkit.getServer().getOnlinePlayers();
     	
-    	//Give Rewards
-    	updateAndRewardOnlinePlayers(currentlyOnlinePlayerArray);
-    	
     	int currentPlayersOnline = currentlyOnlinePlayerArray.length;
-    		updateDatabase(servername, currentPlayersOnline);
+    		updateDatabase(main.getServerName(), currentPlayersOnline);
     }
  
     public void updateDatabase(String servername, int i) {
 		// SEND UPDATED VALUE
 		Map<String, String> data = new HashMap<String, String>();
 		data.put("timeStamp", getUnixTimeStamp());
-		data.put(servername, ""+i);
+		data.put(main.getServerName(), ""+i);
 		try {
-			submitToWeb(uploadURL, data);
+			submitToWeb(main.getWebServerURL(), data);
 		} catch (Exception e) {
 			main.logEvent("ERROR: Cought IO Exception from the webUploader. You're URL is probably bad.", false);
 		}	
@@ -94,33 +88,15 @@ public class StatisticsManager {
 		in.close();
 	}
     
+    /**
+     * Used to get "imprecise" Unix time. Needed to make sure that all servers report more or less the same time.
+     * @return
+     */
     public String getUnixTimeStamp(){
 		long unixTime = System.currentTimeMillis() / 1000L;
 		long makeUnixTimeImprecise = unixTime/100;
 		makeUnixTimeImprecise = makeUnixTimeImprecise*100;
 		return Long.toString(makeUnixTimeImprecise);
-    }
-    
-    public void updateAndRewardOnlinePlayers(Player[] currentlyOnlinePlayerArray){
-    	for (int i=0; i<currentlyOnlinePlayerArray.length; i++){
-    		Integer alreadyLoggedTime = onlinePlayers.get(currentlyOnlinePlayerArray[i]);
-    		if (alreadyLoggedTime != null){
-    			if (alreadyLoggedTime.intValue()>rewardPeriod){
-    				
-    				Location location = currentlyOnlinePlayerArray[i].getLocation();
-    				currentlyOnlinePlayerArray[i].getWorld().playSound(location,Sound.LEVEL_UP,1, 0);
-    				
-    				currentlyOnlinePlayerArray[i].sendMessage(rewardText);
-    				Bukkit.getServer().dispatchCommand(main.getServer().getConsoleSender(), "money give "+currentlyOnlinePlayerArray[i].getName()+" 50");
-    				alreadyLoggedTime = 1;
-    				main.logEvent("BloodStats rewarded: "+currentlyOnlinePlayerArray[i].getName()+" after "+rewardPeriod+"min", false);
-    			}
-		    	onlinePlayers.put(currentlyOnlinePlayerArray[i], (new Integer(alreadyLoggedTime.intValue()+4)));
-    		}
-    		else {
-		    	onlinePlayers.put(currentlyOnlinePlayerArray[i], Integer.valueOf(1));
-    		}
-    	}
     }
 }
 

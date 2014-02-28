@@ -4,3 +4,19 @@
 
 #Chose which modules you want to have enabled
 EnableStatisticsModule: true
+
+#GENERAL SETTINGS
+#----------------------
+#Needs to be unique in a multi-server environment. E.g. bcloud_survival
+ServerName: yourservername
+#The URL of the bloodAST folder that you put on your webserver E.g. http://yourhost.com/bloodAST/
+WebServerURL: http://yourhost.com/bloodAST
+
+#STATISTICS SETTINGS
+#----------------------
+#How often do you want to update your statistics page in minutes. More often = more cpu usage & database storage required.
+StatisticsUpdatePeriod: 4
+
+#This text is displayed to the player when he has been online for the duration of the RewardPeriod.
+RewardText: 
+RewardPeriod:

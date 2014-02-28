@@ -5,8 +5,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class MainBloodAST extends JavaPlugin{
 
 	//Global Parameters
-	String serverName;
-	String serverURL;
+	private String serverName;
+	private String webServerURL;
+	private int schedulerPeriod;
 	boolean debugMode;
 	
 		/**
@@ -14,13 +15,14 @@ public class MainBloodAST extends JavaPlugin{
 		 */
 	 	@Override
 	    public void onEnable(){
+			logEvent("Attempting to start ADVANCED SERVER TOOLS provided by bCloud (http://blood-cloud.com)", true);
+	 		this.saveDefaultConfig();
+	 		loadMainSettings();
 	 		
-	 		
-		 this.saveDefaultConfig();
-		 logEvent("Attempting to start ADVANCED SERVER TOOLS provided by bCloud (http://blood-cloud.com)", true);
-		 if (MainBloodAST.this.getConfig().getBoolean("EnableStatisticsModule")){
+	 		//Enabling specific modules:
+			if (MainBloodAST.this.getConfig().getBoolean("EnableStatisticsModule")){
 			 
-		 }
+			}
 	    }
 	 
 	    @Override
@@ -28,7 +30,11 @@ public class MainBloodAST extends JavaPlugin{
 	    	logEvent("BloodAST successfully exited", true);
 	    } 
 	    
-	    
+	    public void loadMainSettings(){
+	 		serverName = MainBloodAST.this.getConfig().getString("ServerName");
+	 		webServerURL = MainBloodAST.this.getConfig().getString("WebServerURL");
+	 		schedulerPeriod = MainBloodAST.this.getConfig().getInt("SchedulerPeriod");
+	    }
 	    
 	    /**
 	     * Display debug logs in the server console. If force log is true the message
@@ -42,4 +48,16 @@ public class MainBloodAST extends JavaPlugin{
 			 	getLogger().info(input);
 	    	}
 	    }
+
+		public String getServerName() {
+			return serverName;
+		}
+		public String getWebServerURL() {
+			return webServerURL;
+		}
+
+		public int getSchedulerPeriod() {
+			return schedulerPeriod;
+		}
+
 }
