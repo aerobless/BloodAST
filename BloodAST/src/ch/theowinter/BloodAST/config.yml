@@ -1,0 +1,6 @@
+# Config file for BloodAST
+# Advanced Server Tools provided by bCloud (http://blood-cloud.com)
+# Feedback? Drop me an e-mail at "theo@w1nter.com".
+
+#Chose which modules you want to have enabled
+EnableStatisticsModule: true

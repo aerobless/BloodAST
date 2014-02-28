@@ -1,0 +1,4 @@
+name: BloodAST
+main: ch.theowinter.BloodAST.MainBloodAST
+version: 1
+depend: [iConomy]
