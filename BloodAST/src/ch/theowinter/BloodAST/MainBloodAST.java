@@ -2,6 +2,7 @@ package ch.theowinter.BloodAST;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import ch.theowinter.BloodAST.modules.RewardManager;
 import ch.theowinter.BloodAST.modules.StatisticsManager;
 
 public class MainBloodAST extends JavaPlugin{
@@ -28,6 +29,11 @@ public class MainBloodAST extends JavaPlugin{
 				StatisticsManager statManager = new StatisticsManager(mainClass);
 				statManager.StatsTracker();
 				logEvent("Statistics-Module successfully loaded.", false);
+			}
+			if (MainBloodAST.this.getConfig().getBoolean("EnableRewardModule")){
+				RewardManager rewardManager = new RewardManager(mainClass);
+				rewardManager.scheduleNextReward();
+				logEvent("Reward-Module successfully loaded.", false);
 			}
 	    }
 	 
