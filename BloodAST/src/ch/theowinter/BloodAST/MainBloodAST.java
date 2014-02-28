@@ -1,5 +1,7 @@
 package ch.theowinter.BloodAST;
 
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import ch.theowinter.BloodAST.modules.RewardManager;
@@ -41,6 +43,15 @@ public class MainBloodAST extends JavaPlugin{
 	    public void onDisable() {
 	    	logEvent("BloodAST successfully exited", true);
 	    } 
+	    
+	    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
+	    	if(cmd.getName().equalsIgnoreCase("basic")){ // If the player typed /basic then do the following...
+	    		sender.sendMessage("hihihi");
+	    		return true;
+	    	}
+	    	
+	    	return false; 
+	    }
 	    
 	    public void loadMainSettings(){
 	    	debugMode = MainBloodAST.this.getConfig().getBoolean("LogDebugMessagesToConsole");

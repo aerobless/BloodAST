@@ -5,6 +5,7 @@
 #Chose which modules you want to have enabled
 EnableStatisticsModule: true
 EnableRewardModule: true
+EnablePunishmentModule: true
 
 #GENERAL SETTINGS
 #----------------------
@@ -30,3 +31,5 @@ RewardAmount: 50
 RewardGivePeriod: 29
 #How often do we check if the reward-condition (^^) has been met?
 RewardCheckPeriod: 4
+
+#PUNISHMENT SETTINGS

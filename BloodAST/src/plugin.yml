@@ -2,3 +2,8 @@ name: BloodAST
 main: ch.theowinter.BloodAST.MainBloodAST
 version: 1
 depend: [iConomy]
+
+commands:
+   basic:
+      description: This is a demo command.
+      usage: /<command> [player]
