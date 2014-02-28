@@ -23,6 +23,10 @@ StatisticsUpdatePeriod: 4
 #REWARD SETTINGS
 #----------------------
 #This text is displayed to the player when he has been online for the duration of the RewardPeriod.
-RewardText: 
-#How often (minutes) do you want to reward your players?
-RewardPeriod:
+RewardText: To thank you for playing on servername we sent you 50 dollars to spend in our ingame shop!
+#How much ingame money do you want to give the player after each reward period?
+RewardAmount: 50
+#After how many minutes do you want to reward your players?
+RewardGivePeriod: 29
+#How often do we check if the reward-condition (^^) has been met?
+RewardCheckPeriod: 4

@@ -14,7 +14,9 @@ public class RewardManager {
 	
 	//Loaded Parameters
 	String rewardText = "";
-	int rewardPeriod = 0;
+	int rewardAmount = 0;
+	int rewardCheckPeriod = 0;
+	int rewardGivePeriod = 0;
 	
 	//Temporary Parameters
 	HashMap<Player, Integer> onlinePlayers = new HashMap<Player, Integer>();
@@ -22,6 +24,10 @@ public class RewardManager {
 	public RewardManager(MainBloodAST mainClass) {
 		super();
 		main = mainClass;
+		rewardText = main.getConfig().getString("RewardText");
+		rewardAmount = main.getConfig().getInt("RewardAmount");
+		rewardCheckPeriod = main.getConfig().getInt("RewardCheckPeriod");
+		rewardGivePeriod = main.getConfig().getInt("RewardGivePeriod");
 	}
 	
     public void scheduleNextReward(){
@@ -32,14 +38,14 @@ public class RewardManager {
             	updateAndRewardOnlinePlayers(currentlyOnlinePlayerArray);
             	scheduleNextReward();
             }
-        }, rewardPeriod*60*20L  ); //20L = 1second
+        }, rewardCheckPeriod*60*20L  ); //20L = 1second
     }
 	
    private void updateAndRewardOnlinePlayers(Player[] currentlyOnlinePlayerArray){
     	for (int i=0; i<currentlyOnlinePlayerArray.length; i++){
     		Integer alreadyLoggedTime = onlinePlayers.get(currentlyOnlinePlayerArray[i]);
     		if (alreadyLoggedTime != null){
-    			if (alreadyLoggedTime.intValue()>rewardPeriod){
+    			if (alreadyLoggedTime.intValue()>rewardGivePeriod){
     				giveReward(currentlyOnlinePlayerArray[i]);
     				alreadyLoggedTime = 1;
     			}
@@ -56,7 +62,7 @@ public class RewardManager {
 		player.getWorld().playSound(location,Sound.LEVEL_UP,1, 0);
 		
 		player.sendMessage(rewardText);
-		Bukkit.getServer().dispatchCommand(main.getServer().getConsoleSender(), "money give "+player.getName()+" 50");
-		main.logEvent("BloodStats rewarded: "+player.getName()+" after "+rewardPeriod+"min", false);
+		Bukkit.getServer().dispatchCommand(main.getServer().getConsoleSender(), "money give "+player.getName()+" "+rewardAmount);
+		main.logEvent("BloodStats rewarded: "+player.getName()+" after "+rewardGivePeriod+"min", false);
     }
 }
