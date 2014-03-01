@@ -28,7 +28,7 @@ public class MainBloodAST extends JavaPlugin{
 	 	@Override
 	    public void onEnable(){
 			logEvent("Attempting to start ADVANCED SERVER TOOLS provided by bCloud (http://blood-cloud.com)", true);
-	 		this.saveDefaultConfig();
+	 		this.saveDefaultConfig(); //Save config if it isn't there yet
 	 		loadMainSettings();
 	 		loadCommands();
 	 		
@@ -47,6 +47,9 @@ public class MainBloodAST extends JavaPlugin{
 				//Import the commands for the punishment module.
 		    	getCommand("warn").setExecutor(new PunishmentManager(this));
 			}
+			
+			//Saving the config after we've loaded everything to get the newst version down into the file.. it's a test.
+			this.saveConfig();
 	    }
 	 
 	    @Override
