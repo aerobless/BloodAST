@@ -1,5 +1,7 @@
 package ch.theowinter.BloodAST;
 
+import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -81,6 +83,38 @@ public class MainBloodAST extends JavaPlugin{
 		    	}
 	    	}
 			return success;
+	    }
+	    
+	    /**
+	     * Concatenates an array from startPosition to the end of the array.
+	     * Useful when dealing with commands that have an open ended text
+	     * input, such as "/warn playername reason".
+	     * 
+	     * @param args
+	     * @param startPosition
+	     * @return concatenatedArray
+	     */    
+	    public String[] concatenateArgs(String[] args, int startPosition){
+	      	String[] concatenatedArray = new String[startPosition];
+	    	if (args.length>startPosition){
+		    	StringBuilder builder = new StringBuilder();
+		    	//Append all args from the startPosition to the end of the array
+		    	for(int i = startPosition; i<args.length;i++){
+		    		builder.append(args[i]+" ");
+		    	}
+		    	String concatenatedString = builder.toString();
+		    	concatenatedString = concatenatedString.substring(concatenatedString.length()-1, concatenatedString.length());
+		    	//Copy args that weren't concatenated into the new array
+		    	for(int i=0; i>concatenatedArray.length; i++){
+		    		concatenatedArray[i]=args[i];
+		    	}
+		    	//Replace last arg with our newly built string
+		    	concatenatedArray[startPosition]=concatenatedString;
+	    	}
+	    	else{
+	    		concatenatedArray = args;
+	    	}
+			return concatenatedArray;
 	    }
 	    
 	    /**
