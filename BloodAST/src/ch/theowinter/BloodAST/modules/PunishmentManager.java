@@ -18,22 +18,22 @@ public class PunishmentManager implements CommandExecutor {
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		boolean success = false;
     	if(cmd.getName().equalsIgnoreCase("warn")){
-    		if(args[0].equals(sender.getName())){
-        		sender.sendMessage("Sorry.. but you can't warn yourself dude.");
-    		}
-    		else{
-        		if(warnPlayer(args[0], args[1])){
-        			sender.sendMessage("Successfully warned "+args[0]);
+    		if (main.permissionsCheck(sender, "blood.punishment.warn")){
+    		   	if(args[0].equals(sender.getName())){
+            		sender.sendMessage("Sorry.. but you can't warn yourself dude.");
         		}
         		else{
-        			sender.sendMessage("Unable to warn "+args[0]+". Are you sure you spelled his name right?");
+            		if(warnPlayer(args[0], args[1])){
+            			sender.sendMessage("Successfully warned "+args[0]);
+            		}
+            		else{
+            			sender.sendMessage("Unable to warn "+args[0]+". Are you sure you spelled his name right?");
+            		}
         		}
     		}
-    		success = true;
     	}
-		return success;
+		return true;
 	}
 	
 	public boolean warnPlayer(String playername, String warnMessage){

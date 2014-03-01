@@ -1,5 +1,8 @@
 package ch.theowinter.BloodAST;
 
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import ch.theowinter.BloodAST.modules.PunishmentManager;
@@ -14,7 +17,10 @@ public class MainBloodAST extends JavaPlugin{
 	private String serverName;
 	private String webServerURL;
 	private int schedulerPeriod;
+	
+	//Global Switches
 	boolean debugMode;
+	boolean opCanUseAllCommands;
 	
 		/**
 		 * Initializing the plugin and loading all enabled modules.
@@ -48,15 +54,40 @@ public class MainBloodAST extends JavaPlugin{
 	    	logEvent("BloodAST successfully exited", true);
 	    } 
 	    
-	    public void loadMainSettings(){
+	    private void loadMainSettings(){
 	    	debugMode = MainBloodAST.this.getConfig().getBoolean("LogDebugMessagesToConsole");
 	 		serverName = MainBloodAST.this.getConfig().getString("ServerName");
 	 		webServerURL = MainBloodAST.this.getConfig().getString("WebServerURL");
 	 		schedulerPeriod = MainBloodAST.this.getConfig().getInt("SchedulerPeriod");
+	 		opCanUseAllCommands = MainBloodAST.this.getConfig().getBoolean("OPCanUseAllCommands");
 	    }
 	    
-	    public void loadCommands(){
-	    	getCommand("basic").setExecutor(new BloodASTCommandExecutor(this));
+	    private void loadCommands(){
+	    	//getCommand("basic").setExecutor(new BloodASTCommandExecutor(this));
+	    }
+	    
+	    /**
+	     * Checks whether the player has the required permission or if he is op.
+	     * Depending on the config.yml checking "op"-status can be turned off.
+	     * 
+	     * @param sender
+	     * @param permissionNode
+	     * @return playerHasRequiredPermission
+	     */
+	    
+	    public boolean permissionsCheck(CommandSender sender, String permissionNode){
+	    	boolean playerHasRequiredPermission = false;
+	    	playerHasRequiredPermission = sender.hasPermission(permissionNode);
+	    	
+	    	if (opCanUseAllCommands==true){
+	    		if (sender.isOp()){
+	    			playerHasRequiredPermission = true;
+	    		}
+	    	}
+	    	if(playerHasRequiredPermission == false){
+	    		sender.sendMessage(ChatColor.RED + "Sorry you don't have the required permission.");
+	    	}
+			return playerHasRequiredPermission;
 	    }
 	    
 	    /**

@@ -15,6 +15,8 @@ LogDebugMessagesToConsole: true
 ServerName: yourservername
 #The URL of the bloodAST folder that you put on your webserver E.g. http://yourhost.com/bloodAST/
 WebServerURL: http://yourhost.com/bloodAST
+#OP's are allowed to use all commands even if they don't have the correct permission.
+OPCanUseAllCommands: true
 
 #STATISTICS SETTINGS
 #----------------------

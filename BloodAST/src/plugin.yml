@@ -7,3 +7,6 @@ commands:
    basic:
       description: This is a demo command.
       usage: /<command> [player]
+   warn:
+      description: Warn players when they do something wrong.
+      usage: /<command> [player] [warn text]
