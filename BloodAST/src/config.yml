@@ -1,5 +1,7 @@
 # Config file for BloodAST
 # Advanced Server Tools provided by bCloud (http://blood-cloud.com)
+# Messed up the config? Missing the comments? Get the original config.yml from GitHub!
+# https://github.com/aerobless/BloodAST/blob/master/BloodAST/src/config.yml
 # Feedback? Drop me an e-mail at "theo@w1nter.com".
 
 #Chose which modules you want to have enabled

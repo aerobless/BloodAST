@@ -69,6 +69,20 @@ public class MainBloodAST extends JavaPlugin{
 	    	//getCommand("basic").setExecutor(new BloodASTCommandExecutor(this));
 	    }
 	    
+	    public boolean permAndArgsCheck(CommandSender sender, String permissionNode, String[] args, int expectedNumberOfArgs){
+	    	boolean success = false;
+	    	if(permissionsCheck(sender, permissionNode)){
+		    	if(args.length != expectedNumberOfArgs){
+		    		sender.sendMessage(ChatColor.RED + "This command is expecting "+expectedNumberOfArgs+" arguments, but you sent "+args.length);
+		    		sender.sendMessage(ChatColor.RED + "Try again or ask the server-administrator for help.");
+		    	}
+		    	else{
+		    		success = true;
+		    	}
+	    	}
+			return success;
+	    }
+	    
 	    /**
 	     * Checks whether the player has the required permission or if he is op.
 	     * Depending on the config.yml checking "op"-status can be turned off.
@@ -77,7 +91,6 @@ public class MainBloodAST extends JavaPlugin{
 	     * @param permissionNode
 	     * @return playerHasRequiredPermission
 	     */
-	    
 	    public boolean permissionsCheck(CommandSender sender, String permissionNode){
 	    	boolean playerHasRequiredPermission = false;
 	    	playerHasRequiredPermission = sender.hasPermission(permissionNode);
