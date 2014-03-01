@@ -2,6 +2,7 @@ package ch.theowinter.BloodAST;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import ch.theowinter.BloodAST.modules.PunishmentManager;
 import ch.theowinter.BloodAST.modules.RewardManager;
 import ch.theowinter.BloodAST.modules.StatisticsManager;
 
@@ -35,6 +36,10 @@ public class MainBloodAST extends JavaPlugin{
 				RewardManager rewardManager = new RewardManager(mainClass);
 				rewardManager.scheduleNextReward();
 				logEvent("Reward-Module successfully loaded.", false);
+			}
+			if (MainBloodAST.this.getConfig().getBoolean("EnablePunishmentModule")){
+				//Import the commands for the punishment module.
+		    	getCommand("warn").setExecutor(new PunishmentManager(this));
 			}
 	    }
 	 
