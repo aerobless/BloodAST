@@ -5,9 +5,18 @@
 # Feedback? Drop me an e-mail at "theo@w1nter.com".
 
 #Chose which modules you want to have enabled
+#----------------------
 EnableStatisticsModule: true
 EnableRewardModule: true
 EnablePunishmentModule: true
+
+#SQL Connection Information
+#----------------------
+host: localhost
+port: 3306
+database: bloodAST
+username: yourDatabaseUser
+password: yourDatabaseUsersPassword
 
 #GENERAL SETTINGS
 #----------------------

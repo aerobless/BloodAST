@@ -19,8 +19,8 @@ public class PunishmentManager implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     	if(cmd.getName().equalsIgnoreCase("warn")){
-    		
-    		if (main.permAndArgsCheck(sender, "blood.punishment.warn", args, 2)){
+    		String[] goodArgs = main.concatenateArgs(args, 2);
+    		if (main.permAndArgsCheck(sender, "blood.punishment.warn", goodArgs, 2)){
     		   	if(args[0].equals(sender.getName())){
             		sender.sendMessage("Sorry.. but you can't warn yourself dude.");
         		}
