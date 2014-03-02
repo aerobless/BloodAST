@@ -12,6 +12,8 @@ EnablePunishmentModule: true
 
 #SQL Connection Information
 #----------------------
+#You need to have SQL configured for the statistics module and for making bans/warnings etc. visible on your website.
+EnableSQL: true
 host: localhost
 port: 3306
 database: bloodAST
