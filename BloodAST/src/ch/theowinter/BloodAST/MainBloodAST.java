@@ -1,19 +1,19 @@
 package ch.theowinter.BloodAST;
 
-import java.util.ArrayList;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import ch.theowinter.BloodAST.modules.PunishmentManager;
 import ch.theowinter.BloodAST.modules.RewardManager;
 import ch.theowinter.BloodAST.modules.StatisticsManager;
+import ch.theowinter.BloodAST.utilities.LogicEngine;
 
 public class MainBloodAST extends JavaPlugin{
 	//Used so that sub-classes can use methods in here
 	MainBloodAST mainClass = this;
+	//Used to access logic methods
+	LogicEngine logic = new LogicEngine(); 
 
 	//Global Parameters
 	private String serverName;
@@ -71,6 +71,30 @@ public class MainBloodAST extends JavaPlugin{
 	    	//getCommand("basic").setExecutor(new BloodASTCommandExecutor(this));
 	    }
 	    
+	    /**
+	     * Concatenates an array from startPosition to the end of the array.
+	     * Useful when dealing with commands that have an open ended text
+	     * input, such as "/warn playername reason".
+	     * 
+	     * @param args
+	     * @param arrayLength
+	     * @return concatenatedArray
+	     */    
+	    public String[] concatenateArgs(String[] args, int arrayLength){
+			return logic.concatenateArgs(args, arrayLength);
+	    }
+	    
+	    /**
+	     * Check whether the player has the required permissions and make sure that he provided
+	     * sufficient arguments when entering the command. That way we can make sure that
+	     * there is no array out of bound.
+	     *  
+	     * @param sender
+	     * @param permissionNode
+	     * @param args
+	     * @param expectedNumberOfArgs
+	     * @return success
+	     */
 	    public boolean permAndArgsCheck(CommandSender sender, String permissionNode, String[] args, int expectedNumberOfArgs){
 	    	boolean success = false;
 	    	if(permissionsCheck(sender, permissionNode)){
@@ -83,38 +107,6 @@ public class MainBloodAST extends JavaPlugin{
 		    	}
 	    	}
 			return success;
-	    }
-	    
-	    /**
-	     * Concatenates an array from startPosition to the end of the array.
-	     * Useful when dealing with commands that have an open ended text
-	     * input, such as "/warn playername reason".
-	     * 
-	     * @param args
-	     * @param startPosition
-	     * @return concatenatedArray
-	     */    
-	    public String[] concatenateArgs(String[] args, int startPosition){
-	      	String[] concatenatedArray = new String[startPosition];
-	    	if (args.length>startPosition){
-		    	StringBuilder builder = new StringBuilder();
-		    	//Append all args from the startPosition to the end of the array
-		    	for(int i = startPosition; i<args.length;i++){
-		    		builder.append(args[i]+" ");
-		    	}
-		    	String concatenatedString = builder.toString();
-		    	concatenatedString = concatenatedString.substring(concatenatedString.length()-1, concatenatedString.length());
-		    	//Copy args that weren't concatenated into the new array
-		    	for(int i=0; i>concatenatedArray.length; i++){
-		    		concatenatedArray[i]=args[i];
-		    	}
-		    	//Replace last arg with our newly built string
-		    	concatenatedArray[startPosition]=concatenatedString;
-	    	}
-	    	else{
-	    		concatenatedArray = args;
-	    	}
-			return concatenatedArray;
 	    }
 	    
 	    /**

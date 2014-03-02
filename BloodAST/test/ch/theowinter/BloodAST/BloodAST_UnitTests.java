@@ -1,79 +1,39 @@
 package ch.theowinter.BloodAST;
 
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.never;
+import static org.junit.Assert.*;
 
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(PlayerJoinEvent.class)
+import ch.theowinter.BloodAST.utilities.LogicEngine;
+
 public class BloodAST_UnitTests {
-
 		@Test
-		public void warnPlayerTest(){
-			//Pretty dumb empty test
+		public void testConcatenateArgs(){
+			LogicEngine command = new LogicEngine();
+			
+			//Test with array longer then what we want.
+			String[] inputArgsTest1 = new String[6];
+			inputArgsTest1[0] = "herobrine";
+			inputArgsTest1[1] = "Warned";	
+			inputArgsTest1[2] = "for";
+			inputArgsTest1[3] = "griefing";
+			inputArgsTest1[4] = "a";
+			inputArgsTest1[5] = "house.";
+			String[] controlArray = new String[2];
+			controlArray[0] = "herobrine";
+			controlArray[1] = "Warned for griefing a house.";
+			String[] outputArgs = command.concatenateArgs(inputArgsTest1, 2);	
+			assertArrayEquals(controlArray, outputArgs);
+			
+			//Test with array same length we want.
+			String[] inputArgsTest2 = new String[2];
+			inputArgsTest2[0] = "aerobless";
+			inputArgsTest2[1] = "tests his methods thoroughly :D.";
+			assertArrayEquals(inputArgsTest2, command.concatenateArgs(inputArgsTest2, 2));
+			
+			//Test with array shorter then what we want.
+			String[] inputArgsTest3 = new String[1];
+			inputArgsTest3[0] = "MySpacebarIsBroken";
+			assertArrayEquals(inputArgsTest3, command.concatenateArgs(inputArgsTest3, 2));
 		}
-		
-		
-		//TRYING TO SETUP SOME TESTS WITH MOCK OBJECTS.. WORK IN PROGRESS
-	    @Test
-	    public void testOnPlayerJoin() {
-	        /*
-	         * Set up our fake PlayerJoinEvent
-	         */
-	        
-	        // we have to use PowerMockito.mock because .getPlayer() is a final method
-	        PlayerJoinEvent mockEvent = PowerMockito.mock(PlayerJoinEvent.class);
-	        
-	        /*
-	         * Set up our first Player
-	         */
-	        
-	        // we are not calling any final methods on this class so can just use Mockitos normal mock
-	        Player mockPlayer = mock(Player.class);
-
-	        // effectively set the player name to "Pandarr"
-	        when(mockPlayer.getName()).thenReturn("aerobless");
-
-	        // when our onPlayerJoin calls .getPlayer(), we want to return this mockPlayer
-	        when(mockEvent.getPlayer()).thenReturn(mockPlayer);
-
-	        // create our listener
-	        // PTPlayerListener myPlayerListener = new PTPlayerListener();
-	        // send in our mock event
-	        //  myPlayerListener.onPlayerJoin(mockEvent);
-
-	        // verify that our mockPlayer had sendMessage called
-	        //   we don't care what the string was
-	        verify(mockPlayer).sendMessage(anyString());
-	        
-	        /*
-	         * Set up our second Player
-	         */
-	        
-	        // we are not calling any final methods on this class so can just use Mockitos normal mock
-	        Player mockPlayerCodenameB = mock(Player.class);
-
-	        // effectively set the player name to "CodenameB"
-	        when(mockPlayerCodenameB.getName()).thenReturn("CodenameB");
-
-	        // when our onPlayerJoin calls .getPlayer(), we want to return this mockPlayer
-	        when(mockEvent.getPlayer()).thenReturn(mockPlayerCodenameB);
-
-	        // send in our mock event
-	        //myPlayerListener.onPlayerJoin(mockEvent);
-	        
-	        // verify we did not send this player a message
-	        verify(mockPlayerCodenameB, never()).sendMessage(anyString());
-	    }
-
 }
