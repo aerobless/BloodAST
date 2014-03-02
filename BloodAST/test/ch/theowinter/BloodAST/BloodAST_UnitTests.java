@@ -1,11 +1,8 @@
 package ch.theowinter.BloodAST;
 
 import static org.junit.Assert.*;
-
 import java.sql.SQLException;
-
 import org.junit.Test;
-
 import ch.theowinter.BloodAST.utilities.LogicEngine;
 import ch.theowinter.BloodAST.utilities.SQLEngine;
 
@@ -42,6 +39,7 @@ public class BloodAST_UnitTests {
 			inputArgsTest3[0] = "MySpacebarIsBroken";
 			assertArrayEquals(inputArgsTest3, command.concatenateArgs(inputArgsTest3, 2));
 		}
+		
 		/**
 		 * To run this test you need to have a local mysql-server running on port 8889
 		 * with a database "test", and a user "test with password "test". (You can use
