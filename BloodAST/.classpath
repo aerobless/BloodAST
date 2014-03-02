@@ -17,5 +17,6 @@
 	<classpathentry kind="lib" path="/Users/theowinter/Dropbox/Libraries/powermock-easymock-junit-1.5.4/objenesis-2.1.jar"/>
 	<classpathentry kind="lib" path="/Users/theowinter/Dropbox/Libraries/powermock-easymock-junit-1.5.4/powermock-easymock-1.5.4-full.jar"/>
 	<classpathentry kind="lib" path="/Users/theowinter/Dropbox/Libraries/powermock-easymock-junit-1.5.4/powermock-mockito-1.5.4-full.jar"/>
+	<classpathentry kind="lib" path="/Users/theowinter/Dropbox/Libraries/mysql-connector-java-5.1.29-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

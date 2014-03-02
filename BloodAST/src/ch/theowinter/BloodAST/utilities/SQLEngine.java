@@ -3,7 +3,7 @@ import java.sql.*;
 
 public class SQLEngine {
 	 // JDBC driver name and database URL
-	static String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
+	//static String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
 	static String DB_URL;
 	static String USER;
 	static String PASS;
@@ -18,15 +18,14 @@ public class SQLEngine {
 		PASS = password;
 	}
 	
-	private void setupConnection() throws ClassNotFoundException, SQLException{
-		 Class.forName("com.mysql.jdbc.Driver");
+	public void setupConnection() throws ClassNotFoundException, SQLException{
+		Class.forName("com.mysql.jdbc.Driver");
 		 conn = DriverManager.getConnection(DB_URL,USER,PASS);
 	}
 	
 	public int insertUpdate(String sqlQuery) throws SQLException, ClassNotFoundException{
 		int changes = 0;
 		if(conn.isValid(2)){
-		    System.out.println("Creating statement...");
 		    Statement sqlStatement = conn.createStatement();
 		    changes = sqlStatement.executeUpdate(sqlQuery);
 		}
