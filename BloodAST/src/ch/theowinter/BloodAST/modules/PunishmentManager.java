@@ -1,5 +1,7 @@
 package ch.theowinter.BloodAST.modules;
 
+import java.sql.SQLException;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -7,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import ch.theowinter.BloodAST.MainBloodAST;
+import ch.theowinter.BloodAST.utilities.SQLEngine;
 
 public class PunishmentManager implements CommandExecutor {
 	private MainBloodAST main;
@@ -35,6 +38,28 @@ public class PunishmentManager implements CommandExecutor {
     		}
     	}
 		return true;
+	}
+	
+	public void setupTable(){
+		SQLEngine sql = new SQLEngine("localhost", 8889, "test", "testUser", "password");
+			try {
+				sql.setupConnection();
+				sql.insertUpdate("CREATE TABLE pm_warnings ("
+						+ "`warn_id` INT( 11 ) NOT NULL ,"
+						+ "`warned` VARCHAR( 32 ) NOT NULL ,"
+						+ "`warned_by` VARCHAR( 32 ) NOT NULL ,"
+						+ "`warn_reason` text NOT NULL ,"
+						+ "`warn_time` INT( 11 ) NOT NULL ,"
+						+ "`server` VARCHAR( 32 ) NOT NULL"
+						+ ") ENGINE = INNODB DEFAULT CHARSET = latin1;");
+				sql.insertUpdate("INSERT INTO pm_warnings VALUES ('1', 'testuser', 'notch', 'testing','1111','testserver');");
+			} catch (ClassNotFoundException anEx) {
+				// TODO Auto-generated catch block
+				anEx.printStackTrace();
+			} catch (SQLException anEx) {
+				// TODO Auto-generated catch block
+				anEx.printStackTrace();
+			}
 	}
 	
 	public boolean warnPlayer(String playername, String warnMessage){

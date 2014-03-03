@@ -1,8 +1,13 @@
 package ch.theowinter.BloodAST;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+
 import java.sql.SQLException;
+
 import org.junit.Test;
+
+import ch.theowinter.BloodAST.modules.PunishmentManager;
 import ch.theowinter.BloodAST.utilities.LogicEngine;
 import ch.theowinter.BloodAST.utilities.SQLEngine;
 
@@ -71,6 +76,13 @@ public class BloodAST_UnitTests {
 			else{
 				System.out.println("You've disabled the database tests.");
 			}
+			
+		}
+		
+		@Test
+		public void testPMWarningSetup(){
+			PunishmentManager pm = new PunishmentManager(null);
+			pm.setupTable();
 			
 		}
 }
