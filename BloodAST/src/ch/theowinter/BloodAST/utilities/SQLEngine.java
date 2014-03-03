@@ -1,5 +1,8 @@
 package ch.theowinter.BloodAST.utilities;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class SQLEngine {
 	 // JDBC driver name and database URL
@@ -34,5 +37,26 @@ public class SQLEngine {
 			setupConnection();
 		}
 		return changes;
+	}
+	
+	public void setupTables(){
+			try {
+				//Punishment Manager
+				insertUpdate("CREATE TABLE pm_warnings ("
+						+ "`warn_id` INT( 11 ) NOT NULL ,"
+						+ "`warned` VARCHAR( 32 ) NOT NULL ,"
+						+ "`warned_by` VARCHAR( 32 ) NOT NULL ,"
+						+ "`warn_reason` text NOT NULL ,"
+						+ "`warn_time` INT( 11 ) NOT NULL ,"
+						+ "`server` VARCHAR( 32 ) NOT NULL"
+						+ ") ENGINE = INNODB DEFAULT CHARSET = latin1;");
+				insertUpdate("INSERT INTO pm_warnings VALUES ('1', 'testuser', 'notch', 'testing','1111','testserver');");
+			} catch (ClassNotFoundException anEx) {
+				// TODO Auto-generated catch block
+				anEx.printStackTrace();
+			} catch (SQLException anEx) {
+				// TODO Auto-generated catch block
+				anEx.printStackTrace();
+			}
 	}
 }

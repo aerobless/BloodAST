@@ -7,7 +7,6 @@ import java.sql.SQLException;
 
 import org.junit.Test;
 
-import ch.theowinter.BloodAST.modules.PunishmentManager;
 import ch.theowinter.BloodAST.utilities.LogicEngine;
 import ch.theowinter.BloodAST.utilities.SQLEngine;
 
@@ -76,13 +75,12 @@ public class BloodAST_UnitTests {
 			else{
 				System.out.println("You've disabled the database tests.");
 			}
-			
 		}
 		
 		@Test
 		public void testPMWarningSetup(){
-			PunishmentManager pm = new PunishmentManager(null);
-			pm.setupTable();
+			SQLEngine sql = new SQLEngine("localhost", 8889, "test", "testUser", "password");
+			sql.setupTables();
 			
 		}
 }
