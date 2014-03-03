@@ -78,9 +78,8 @@ public class BloodAST_UnitTests {
 		}
 		
 		@Test
-		public void testPMWarningSetup(){
+		public void testTableSetup(){
 			SQLEngine sql = new SQLEngine("localhost", 8889, "test", "testUser", "password");
 			sql.setupTables();
-			
 		}
 }

@@ -23,6 +23,7 @@ public class MainBloodAST extends JavaPlugin{
 	//Global Switches
 	boolean debugMode;
 	boolean opCanUseAllCommands;
+	boolean enableSQL;
 	
 		/**
 		 * Initializing the plugin and loading all enabled modules.
@@ -31,8 +32,8 @@ public class MainBloodAST extends JavaPlugin{
 	    public void onEnable(){
 			logEvent("Attempting to start ADVANCED SERVER TOOLS provided by bCloud (http://blood-cloud.com)", true);
 	 		this.saveDefaultConfig(); //Save config if it isn't there yet
-	 		loadMainSettings();
-	 		loadCommands();
+	 		loadParamatersFromConfiguration();
+	 		loadSQLConfiguration();
 	 		
 	 		//Enabling specific modules
 			if (MainBloodAST.this.getConfig().getBoolean("EnableStatisticsModule")){
@@ -59,16 +60,19 @@ public class MainBloodAST extends JavaPlugin{
 	    	logEvent("BloodAST successfully exited", true);
 	    } 
 	    
-	    private void loadMainSettings(){
+	    private void loadParamatersFromConfiguration(){
 	    	debugMode = MainBloodAST.this.getConfig().getBoolean("LogDebugMessagesToConsole");
 	 		serverName = MainBloodAST.this.getConfig().getString("ServerName");
 	 		webServerURL = MainBloodAST.this.getConfig().getString("WebServerURL");
 	 		schedulerPeriod = MainBloodAST.this.getConfig().getInt("SchedulerPeriod");
 	 		opCanUseAllCommands = MainBloodAST.this.getConfig().getBoolean("OPCanUseAllCommands");
+	 		enableSQL = MainBloodAST.this.getConfig().getBoolean("EnableSQL");
 	    }
 	    
-	    private void loadCommands(){
-	    	//getCommand("basic").setExecutor(new BloodASTCommandExecutor(this));
+	    private void loadSQLConfiguration(){
+	    	//TODO: init basic SQL channel
+	    	//TODO: check for existing tables OR create new tables
+	    	//TODO: display warning for not using SQL
 	    }
 	    
 	    /**

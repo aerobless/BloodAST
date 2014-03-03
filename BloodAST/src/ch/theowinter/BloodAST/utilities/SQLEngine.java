@@ -50,12 +50,16 @@ public class SQLEngine {
 						+ "`warn_time` INT( 11 ) NOT NULL ,"
 						+ "`server` VARCHAR( 32 ) NOT NULL"
 						+ ") ENGINE = INNODB DEFAULT CHARSET = latin1;");
+				//Statisitics Manager
+				//TODO: Add correct SQL statement
+				
+				
+				//Testing
 				insertUpdate("INSERT INTO pm_warnings VALUES ('1', 'testuser', 'notch', 'testing','1111','testserver');");
 			} catch (ClassNotFoundException anEx) {
-				// TODO Auto-generated catch block
 				anEx.printStackTrace();
 			} catch (SQLException anEx) {
-				// TODO Auto-generated catch block
+				// TODO: Add better error message that gets output through the server's console as a warning.
 				anEx.printStackTrace();
 			}
 	}
