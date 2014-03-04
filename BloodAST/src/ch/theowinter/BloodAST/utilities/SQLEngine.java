@@ -10,18 +10,21 @@ public class SQLEngine {
 	static String DB_URL;
 	static String USER;
 	static String PASS;
+	static String databaseName;
 	
 	//Connection
 	 Connection conn = null;
 	 
-	public SQLEngine(String host, int port, String database, String username, String password) {
+	public SQLEngine(String host, int port, String database, String username, String password) throws Exception {
 		super();
 		DB_URL = "jdbc:mysql://"+host+":"+port+"/"+database;
 		USER = username;
 		PASS = password;
+		databaseName = database;
+		setupConnection();
 	}
 	
-	public void setupConnection() throws ClassNotFoundException, SQLException{
+	private void setupConnection() throws ClassNotFoundException, SQLException{
 		Class.forName("com.mysql.jdbc.Driver");
 		 conn = DriverManager.getConnection(DB_URL,USER,PASS);
 	}
@@ -47,23 +50,27 @@ public class SQLEngine {
 	public void setupTables(){
 			try {
 				//Punishment Manager
-				insertUpdate("CREATE TABLE pm_warnings ("
-						+ "`warn_id` INT( 11 ) NOT NULL ,"
-						+ "`warned` VARCHAR( 32 ) NOT NULL ,"
-						+ "`warned_by` VARCHAR( 32 ) NOT NULL ,"
-						+ "`warn_reason` text NOT NULL ,"
-						+ "`warn_time` INT( 11 ) NOT NULL ,"
-						+ "`server` VARCHAR( 32 ) NOT NULL"
-						+ ") ENGINE = INNODB DEFAULT CHARSET = latin1;");
+				insertUpdate("CREATE TABLE IF NOT EXISTS pm_warnings ("
+						+ "`warn_id` INT( 11 ) NOT NULL AUTO_INCREMENT,"
+						+ "`warned` VARCHAR( 32 ) NOT NULL,"
+						+ "`warned_by` VARCHAR( 32 ) NOT NULL,"
+						+ "`warn_reason` text NOT NULL,"
+						+ "`warn_time` INT( 11 ) NOT NULL,"
+						+ "`server` VARCHAR( 32 ) NOT NULL,"
+						+ "PRIMARY KEY (`warn_id`)"
+						+ ") ENGINE = INNODB DEFAULT CHARSET = latin1 AUTO_INCREMENT=5;");
 				//Statisitics Manager
 				//TODO: Add correct SQL statement
-				
-				
 				//Testing
-				insertUpdate("INSERT INTO pm_warnings VALUES ('1', 'testuser', 'notch', 'testing','1111','testserver');");
+				//insertUpdate("INSERT INTO pm_warnings VALUES ('' 'testuser', 'notch', 'testing','1111','testserver');");
 			} catch (SQLException anEx) {
 				// TODO: Add better error message that gets output through the server's console as a warning.
 				anEx.printStackTrace();
 			}
 	}
+	
+	public String getDBName(){
+		return databaseName;
+	}
+	
 }

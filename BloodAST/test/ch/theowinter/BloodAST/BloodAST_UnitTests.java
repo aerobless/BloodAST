@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import org.junit.Test;
 
+import ch.theowinter.BloodAST.modules.PunishmentManager;
 import ch.theowinter.BloodAST.utilities.LogicEngine;
 import ch.theowinter.BloodAST.utilities.SQLEngine;
 
@@ -52,9 +53,9 @@ public class BloodAST_UnitTests {
 		@Test
 		public void testSQLEngine(){
 			if(runDBTests){
-				SQLEngine sql = new SQLEngine("localhost", 8889, "test", "testUser", "password");
+				SQLEngine sql;
 				try {
-					sql.setupConnection();
+					sql = new SQLEngine("localhost", 8889, "test", "testUser", "password");
 					sql.insertUpdate("DROP TABLE IF EXISTS test; ");
 					sql.insertUpdate("CREATE TABLE  test ("
 							+ "`Test1` INT( 11 ) NOT NULL ,"
@@ -64,12 +65,9 @@ public class BloodAST_UnitTests {
 							+ ") ENGINE = INNODB DEFAULT CHARSET = latin1;");
 					int insertedRows = sql.insertUpdate("INSERT INTO test VALUES ('1', '2', '3', '4');");
 					assertEquals(insertedRows, 1);
-				} catch (ClassNotFoundException e) {
+				} catch (Exception e1) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					e1.printStackTrace();
 				}
 			}
 			else{
@@ -79,7 +77,21 @@ public class BloodAST_UnitTests {
 		
 		@Test
 		public void testTableSetup(){
-			SQLEngine sql = new SQLEngine("localhost", 8889, "test", "testUser", "password");
-			sql.setupTables();
+			if(runDBTests){
+				SQLEngine sql;
+				try {
+					sql = new SQLEngine("localhost", 8889, "test", "testUser", "password");
+					sql.setupTables();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		@Test
+		public void testLogWarningToDB(){
+			PunishmentManager punish = new PunishmentManager(null);
+			punish.logWarning("aerobless", "Herobrine", "not griefing fast enough");
 		}
 }

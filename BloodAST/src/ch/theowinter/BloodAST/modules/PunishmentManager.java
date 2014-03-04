@@ -19,7 +19,12 @@ public class PunishmentManager implements CommandExecutor {
 		super();
 		main = mainClass;
 		if(main.getSQLStatus()){
-			sql = new SQLEngine(null, 0, null, null, null);
+			try {
+				sql = new SQLEngine(null, 0, null, null, null);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -61,7 +66,7 @@ public class PunishmentManager implements CommandExecutor {
 			try {
 				//TODO: make sure injections aren't possible, pre-made statements etc.
 				long currentUnixTime = System.currentTimeMillis() / 1000L;
-				sql.insertUpdate("INSERT INTO  'banManager'.'bm_warnings' ("
+				sql.insertUpdate("INSERT INTO  '"+sql.getDBName()+"'.'pm_warnings' ("
 						+ "'warned' ,'warned_by' ,'warn_reason' ,'warn_time' ,'server')"
 						+ "VALUES ('"+playername+"',  '"+sender+"',  '"+warnMessage+"',  '"+currentUnixTime+"',  '"+main.getServerName()+"');");
 			} catch (SQLException e) {
