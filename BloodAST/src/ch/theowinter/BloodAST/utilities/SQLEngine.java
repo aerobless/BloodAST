@@ -26,7 +26,7 @@ public class SQLEngine {
 		 conn = DriverManager.getConnection(DB_URL,USER,PASS);
 	}
 	
-	public int insertUpdate(String sqlQuery) throws SQLException, ClassNotFoundException{
+	public int insertUpdate(String sqlQuery) throws SQLException{
 		int changes = 0;
 		if(conn.isValid(2)){
 		    Statement sqlStatement = conn.createStatement();
@@ -34,7 +34,12 @@ public class SQLEngine {
 		}
 		else{
 			conn.close();
-			setupConnection();
+			try {
+				setupConnection();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return changes;
 	}
@@ -56,8 +61,6 @@ public class SQLEngine {
 				
 				//Testing
 				insertUpdate("INSERT INTO pm_warnings VALUES ('1', 'testuser', 'notch', 'testing','1111','testserver');");
-			} catch (ClassNotFoundException anEx) {
-				anEx.printStackTrace();
 			} catch (SQLException anEx) {
 				// TODO: Add better error message that gets output through the server's console as a warning.
 				anEx.printStackTrace();

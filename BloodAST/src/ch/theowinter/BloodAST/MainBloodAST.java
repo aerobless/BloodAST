@@ -159,5 +159,9 @@ public class MainBloodAST extends JavaPlugin{
 		public int getSchedulerPeriod() {
 			return schedulerPeriod;
 		}
+		
+		public boolean getSQLStatus() {
+			return enableSQL;
+		}
 
 }
