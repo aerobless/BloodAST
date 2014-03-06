@@ -52,44 +52,42 @@ public class SQLEngine {
 		return changes;
 	}
 
-	public String queryCreator(String tableName, ArrayList<String[]> data){
-		
-		//TODO: make inserted variables injection-safe
-		
+	public String insertQueryGenerator(String tableName, ArrayList<String[]> data){
 		StringBuilder strConstruct = new StringBuilder();
-		strConstruct.append("INSERT INTO '"+databaseName+"'.'"+tableName+"' (");
+		strConstruct.append("INSERT INTO "+tableName+" (");
 		
+		//Create the fields row
 		for(int i=0; i<(data.size()); i++){
-			strConstruct.append("'"+data.get(i)[0]+"'");
+			strConstruct.append("`"+data.get(i)[0]+"`");
 			if(i!=(data.size()-1)){
 				strConstruct.append(", ");	
 			}
+			else{
+				strConstruct.append(") VALUES(");
+			}
 		}
 		
-		strConstruct.append(") VALUES(");
-
+		//Create the values row with "?" for the prepared statement
 		for(int i=0; i<(data.size());i++){
 			strConstruct.append("?");
 			if(i!=(data.size()-1)){
 				strConstruct.append(", ");	
 			}
+			else{
+				strConstruct.append(");");
+			}
 		}
-		strConstruct.append(");");	
-		
-		System.out.println(strConstruct);
-		
 		return strConstruct.toString();
 	}
-	
-	public int insertIntoTable(String inputQuery) throws SQLException{
-		PreparedStatement insertStatement;
-		
-		insertStatement = conn.prepareStatement(inputQuery);
-		//insertStatement.set
-
-		//TODO: Query Builder
-		//TODO: convert map into query
-		return 1;
+	public boolean runPreparedStatement(String inputQuery, ArrayList<String[]> data) throws SQLException{
+		 PreparedStatement statement = null;
+		 statement =  conn.prepareStatement(inputQuery);
+		 //TODO: get datatyp
+		 for(int i=0; i<data.size(); i++){
+			 //prep statement insertion starting at 1
+			 statement.setString(i+1, data.get(i)[1]); 
+		 }
+		return statement.execute();
 	}
 	
 	public void setupTables(){

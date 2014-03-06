@@ -96,20 +96,42 @@ public class BloodAST_UnitTests {
 		
 		@Test
 		public void testQueryCreator(){
-			SQLEngine sql;
-			try {
-				sql = new SQLEngine("localhost", 8889, "test", "testUser", "password");
-				ArrayList<String[]> testData = new ArrayList<String[]>();
-				testData.add(new String[] {"name","aerobless"});
-				sql.queryCreator("test-table", testData);
-				
-				ArrayList<String[]> testData2 = new ArrayList<String[]>();
-				testData2.add(new String[] {"name","aerobless"});
-				testData2.add(new String[] {"name2","eletiy"});
-				sql.queryCreator("test-table", testData2);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			//TODO: extract from sqlconnection
+			if(runDBTests){
+				SQLEngine sql;
+				try {
+					sql = new SQLEngine("localhost", 8889, "test", "testUser", "password");
+					ArrayList<String[]> testData = new ArrayList<String[]>();
+					testData.add(new String[] {"name","aerobless"});
+					assertEquals("INSERT INTO test-table (`name`) VALUES(?);", sql.insertQueryGenerator("test-table", testData));
+					
+					ArrayList<String[]> testData2 = new ArrayList<String[]>();
+					testData2.add(new String[] {"name","aerobless"});
+					testData2.add(new String[] {"name2","eletiy"});
+					assertEquals("INSERT INTO test-table (`name`, `name2`) VALUES(?, ?);", sql.insertQueryGenerator("test-table", testData2));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		@Test
+		public void testRunPreparedStmnt(){
+			if(runDBTests){
+				SQLEngine sql;
+				try {
+					sql = new SQLEngine("localhost", 8889, "test", "testUser", "password");
+					ArrayList<String[]> testData2 = new ArrayList<String[]>();
+					testData2.add(new String[] {"Test1","11"});
+					testData2.add(new String[] {"Test2","22"});
+					testData2.add(new String[] {"Teste3","33"});
+					testData2.add(new String[] {"Test4","44"});
+					String sqlQuery = sql.insertQueryGenerator("test", testData2);
+					sql.runPreparedStatement(sqlQuery, testData2);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 }
