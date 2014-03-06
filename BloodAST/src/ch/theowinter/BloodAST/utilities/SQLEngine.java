@@ -59,19 +59,24 @@ public class SQLEngine {
 		StringBuilder strConstruct = new StringBuilder();
 		strConstruct.append("INSERT INTO '"+databaseName+"'.'"+tableName+"' (");
 		
-		for(String[] entry : data){
-			strConstruct.append("'"+entry[0]+"', ");
+		for(int i=0; i<(data.size()); i++){
+			strConstruct.append("'"+data.get(i)[0]+"'");
+			if(i!=(data.size()-1)){
+				strConstruct.append(", ");	
+			}
 		}
-		//Remove last ", "
-		strConstruct.substring(0, strConstruct.length()-2);
-		strConstruct.append(") VALUES(");
 		
-		for(String[] entry : data){
-			strConstruct.append("'"+entry[1]+"', ");
+		strConstruct.append(") VALUES(");
+
+		for(int i=0; i<(data.size());i++){
+			strConstruct.append("?");
+			if(i!=(data.size()-1)){
+				strConstruct.append(", ");	
+			}
 		}
-		//Remove last ", "
-		strConstruct.substring(0, strConstruct.length()-2);
-		strConstruct.append(");");		
+		strConstruct.append(");");	
+		
+		System.out.println(strConstruct);
 		
 		return strConstruct.toString();
 	}

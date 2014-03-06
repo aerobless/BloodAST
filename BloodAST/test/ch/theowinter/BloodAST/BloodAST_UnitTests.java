@@ -3,11 +3,10 @@ package ch.theowinter.BloodAST;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.junit.Test;
 
-import ch.theowinter.BloodAST.modules.PunishmentManager;
 import ch.theowinter.BloodAST.utilities.LogicEngine;
 import ch.theowinter.BloodAST.utilities.SQLEngine;
 
@@ -89,9 +88,28 @@ public class BloodAST_UnitTests {
 			}
 		}
 		
-		@Test
+	/*	@Test
 		public void testLogWarningToDB(){
 			PunishmentManager punish = new PunishmentManager(null);
 			punish.logWarning("aerobless", "Herobrine", "not griefing fast enough");
+		}*/
+		
+		@Test
+		public void testQueryCreator(){
+			SQLEngine sql;
+			try {
+				sql = new SQLEngine("localhost", 8889, "test", "testUser", "password");
+				ArrayList<String[]> testData = new ArrayList<String[]>();
+				testData.add(new String[] {"name","aerobless"});
+				sql.queryCreator("test-table", testData);
+				
+				ArrayList<String[]> testData2 = new ArrayList<String[]>();
+				testData2.add(new String[] {"name","aerobless"});
+				testData2.add(new String[] {"name2","eletiy"});
+				sql.queryCreator("test-table", testData2);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 }
