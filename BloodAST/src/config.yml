@@ -8,6 +8,7 @@
 #----------------------
 EnableStatisticsModule: true
 EnableRewardModule: true
+#PunishmentModule Requires SQL
 EnablePunishmentModule: true
 
 #SQL Connection Information

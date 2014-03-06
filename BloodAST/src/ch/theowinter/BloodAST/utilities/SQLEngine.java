@@ -83,8 +83,7 @@ public class SQLEngine {
 			 statement.setString(i+1, data.get(i)[1]); 
 		 }
 		return statement.execute();
-	}
-	
+	}	
 	public boolean setupTables() throws ClassNotFoundException, SQLException{
 
 				//Punishment Manager
