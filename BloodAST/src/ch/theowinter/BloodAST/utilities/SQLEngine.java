@@ -1,8 +1,13 @@
 package ch.theowinter.BloodAST.utilities;
+
+//TODO: not sure if sql or jdbc imports are better.
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+
 
 public class SQLEngine {
 	 // JDBC driver name and database URL
@@ -45,6 +50,41 @@ public class SQLEngine {
 			}
 		}
 		return changes;
+	}
+
+	public String queryCreator(String tableName, ArrayList<String[]> data){
+		
+		//TODO: make inserted variables injection-safe
+		
+		StringBuilder strConstruct = new StringBuilder();
+		strConstruct.append("INSERT INTO '"+databaseName+"'.'"+tableName+"' (");
+		
+		for(String[] entry : data){
+			strConstruct.append("'"+entry[0]+"', ");
+		}
+		//Remove last ", "
+		strConstruct.substring(0, strConstruct.length()-2);
+		strConstruct.append(") VALUES(");
+		
+		for(String[] entry : data){
+			strConstruct.append("'"+entry[1]+"', ");
+		}
+		//Remove last ", "
+		strConstruct.substring(0, strConstruct.length()-2);
+		strConstruct.append(");");		
+		
+		return strConstruct.toString();
+	}
+	
+	public int insertIntoTable(String inputQuery) throws SQLException{
+		PreparedStatement insertStatement;
+		
+		insertStatement = conn.prepareStatement(inputQuery);
+		//insertStatement.set
+
+		//TODO: Query Builder
+		//TODO: convert map into query
+		return 1;
 	}
 	
 	public void setupTables(){
