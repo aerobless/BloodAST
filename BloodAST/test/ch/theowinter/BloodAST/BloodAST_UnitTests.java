@@ -99,11 +99,10 @@ public class BloodAST_UnitTests {
 		
 		@Test
 		public void testLogWarningToDB(){
-			PunishmentManager punish = new PunishmentManager(null);
-			SQLEngine sql;
+			PunishmentManager punish;
 			try {
-				sql = new SQLEngine("localhost", 8889, "test", "testUser", "password");
-				punish.logWarning(sql, "aerobless", "Herobrine", "not griefing fast enough", "bCloud");
+				punish = new PunishmentManager(null, new SQLEngine("localhost", 8889, "test", "testUser", "password"));
+				punish.logWarning("aerobless", "Herobrine", "not griefing fast enough", "bCloud");
 			} catch (Exception anEx) {
 				// TODO Auto-generated catch block
 				anEx.printStackTrace();
@@ -112,7 +111,6 @@ public class BloodAST_UnitTests {
 		
 		@Test
 		public void testQueryCreator(){
-			//TODO: extract from sqlconnection
 			if(runDBTests){
 				SQLEngine sql;
 				try {

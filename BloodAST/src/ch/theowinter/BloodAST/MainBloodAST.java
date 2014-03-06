@@ -8,6 +8,7 @@ import ch.theowinter.BloodAST.modules.PunishmentManager;
 import ch.theowinter.BloodAST.modules.RewardManager;
 import ch.theowinter.BloodAST.modules.StatisticsManager;
 import ch.theowinter.BloodAST.utilities.LogicEngine;
+import ch.theowinter.BloodAST.utilities.SQLEngine;
 
 public class MainBloodAST extends JavaPlugin{
 	//Used so that sub-classes can use methods in here
@@ -15,15 +16,22 @@ public class MainBloodAST extends JavaPlugin{
 	//Used to access logic methods
 	LogicEngine logic = new LogicEngine(); 
 
-	//Global Parameters
+	//Parameters
 	private String serverName;
 	private String webServerURL;
 	private int schedulerPeriod;
 	
-	//Global Switches
-	boolean debugMode;
-	boolean opCanUseAllCommands;
-	boolean enableSQL;
+	//SQL Settings
+	private String host;
+	private int port;
+	private String database;
+	private String username;
+	private String password;
+	
+	//Switches
+	private boolean debugMode;
+	private boolean opCanUseAllCommands;
+	private boolean enableSQL;
 	
 		/**
 		 * Initializing the plugin and loading all enabled modules.
@@ -46,9 +54,14 @@ public class MainBloodAST extends JavaPlugin{
 				rewardManager.scheduleNextReward();
 				logEvent("Reward-Module successfully loaded.", false);
 			}
-			if (MainBloodAST.this.getConfig().getBoolean("EnablePunishmentModule")){
+			if (MainBloodAST.this.getConfig().getBoolean("EnablePunishmentModule") && enableSQL==true){
 				//Import the commands for the punishment module.
-		    	getCommand("warn").setExecutor(new PunishmentManager(this));
+		    	try {
+					getCommand("warn").setExecutor(new PunishmentManager(this, sqlEngineFactory()));
+				} catch (Exception anEx) {
+					// TODO Auto-generated catch block
+					anEx.printStackTrace();
+				}
 			}
 			
 			//Saving the config after we've loaded everything to get the newst version down into the file.. it's a test.
@@ -70,9 +83,18 @@ public class MainBloodAST extends JavaPlugin{
 	    }
 	    
 	    private void loadSQLConfiguration(){
-	    	//TODO: init basic SQL channel
-	    	//TODO: check for existing tables OR create new tables
-	    	//TODO: display warning for not using SQL
+	    	host = MainBloodAST.this.getConfig().getString("Host");
+	    	port = MainBloodAST.this.getConfig().getInt("Port");
+	    	database = MainBloodAST.this.getConfig().getString("Database");
+	    	username = MainBloodAST.this.getConfig().getString("Username");
+	    	password = MainBloodAST.this.getConfig().getString("Password");
+	    	
+	    	if(enableSQL){
+		    	//TODO: check for existing tables OR create new tables
+	    	}
+	    	else{
+	    		logEvent("SQL IS NOT ENABLED - YOU WILL NOT BE ABLE TO USE ALL FEATURES", true);
+	    	}
 	    }
 	    
 	    /**
@@ -162,6 +184,11 @@ public class MainBloodAST extends JavaPlugin{
 		
 		public boolean getSQLStatus() {
 			return enableSQL;
+		}
+		
+		public SQLEngine sqlEngineFactory() throws Exception{
+			SQLEngine sql = new SQLEngine(host, port, database, username, password);
+			return sql;
 		}
 
 }

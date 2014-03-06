@@ -14,11 +14,12 @@ import ch.theowinter.BloodAST.utilities.SQLEngine;
 
 public class PunishmentManager implements CommandExecutor {
 	private MainBloodAST main;
-	private SQLEngine sql; //TODO: get SQLEngine
-
-	public PunishmentManager(MainBloodAST mainClass) {
+	private SQLEngine sql;
+	
+	public PunishmentManager(MainBloodAST mainClass, SQLEngine sqlEngine) {
 		super();
 		main = mainClass;
+		sql = sqlEngine;
 	}
 	
 	@Override
@@ -48,7 +49,7 @@ public class PunishmentManager implements CommandExecutor {
 		if(player != null){
 			player.sendMessage(ChatColor.RED+"DISCIPLINARY WARNING: "+warnMessage);
 			try {
-				logWarning(sql, sender, playername, warnMessage, main.getServerName());
+				logWarning(sender, playername, warnMessage, main.getServerName());
 			} catch (SQLException anEx) {
 				main.logEvent("SQL Exception - Are your tables setup correctly?", true);
 				anEx.printStackTrace();
@@ -59,7 +60,7 @@ public class PunishmentManager implements CommandExecutor {
 		return success;
 	}
 	
-	public boolean logWarning(SQLEngine sql, String sender, String playername, String warnMessage, String serverName) throws SQLException{
+	public boolean logWarning(String sender, String playername, String warnMessage, String serverName) throws SQLException{
 		boolean success = true;
 			long currentUnixTime = System.currentTimeMillis() / 1000L;
 			ArrayList<String[]> data = new ArrayList<String[]>();
