@@ -28,13 +28,13 @@ public class SQLEngine {
 		databaseName = database;
 		setupConnection();
 	}
-	
+
 	private void setupConnection() throws ClassNotFoundException, SQLException{
 		Class.forName("com.mysql.jdbc.Driver");
 		 conn = DriverManager.getConnection(DB_URL,USER,PASS);
 	}
 	
-	public int insertUpdate(String sqlQuery) throws SQLException{
+	public int insertUpdate(String sqlQuery) throws SQLException, ClassNotFoundException{
 		int changes = 0;
 		if(conn.isValid(2)){
 		    Statement sqlStatement = conn.createStatement();
@@ -42,12 +42,7 @@ public class SQLEngine {
 		}
 		else{
 			conn.close();
-			try {
-				setupConnection();
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			setupConnection();
 		}
 		return changes;
 	}
@@ -79,10 +74,10 @@ public class SQLEngine {
 		}
 		return strConstruct.toString();
 	}
+
 	public boolean runPreparedStatement(String inputQuery, ArrayList<String[]> data) throws SQLException{
 		 PreparedStatement statement = null;
 		 statement =  conn.prepareStatement(inputQuery);
-		 //TODO: get datatyp
 		 for(int i=0; i<data.size(); i++){
 			 //prep statement insertion starting at 1
 			 statement.setString(i+1, data.get(i)[1]); 
@@ -90,8 +85,8 @@ public class SQLEngine {
 		return statement.execute();
 	}
 	
-	public void setupTables(){
-			try {
+	public boolean setupTables() throws ClassNotFoundException, SQLException{
+
 				//Punishment Manager
 				insertUpdate("CREATE TABLE IF NOT EXISTS pm_warnings ("
 						+ "`warn_id` INT( 11 ) NOT NULL AUTO_INCREMENT,"
@@ -106,10 +101,7 @@ public class SQLEngine {
 				//TODO: Add correct SQL statement
 				//Testing
 				//insertUpdate("INSERT INTO pm_warnings VALUES ('' 'testuser', 'notch', 'testing','1111','testserver');");
-			} catch (SQLException anEx) {
-				// TODO: Add better error message that gets output through the server's console as a warning.
-				anEx.printStackTrace();
-			}
+				return true;
 	}
 	
 	public String getDBName(){

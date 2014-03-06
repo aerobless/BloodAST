@@ -66,9 +66,14 @@ public class PunishmentManager implements CommandExecutor {
 			try {
 				//TODO: make sure injections aren't possible, pre-made statements etc.
 				long currentUnixTime = System.currentTimeMillis() / 1000L;
-				sql.insertUpdate("INSERT INTO  '"+sql.getDBName()+"'.'pm_warnings' ("
-						+ "'warned' ,'warned_by' ,'warn_reason' ,'warn_time' ,'server')"
-						+ "VALUES ('"+playername+"',  '"+sender+"',  '"+warnMessage+"',  '"+currentUnixTime+"',  '"+main.getServerName()+"');");
+				try {
+					sql.insertUpdate("INSERT INTO  '"+sql.getDBName()+"'.'pm_warnings' ("
+							+ "'warned' ,'warned_by' ,'warn_reason' ,'warn_time' ,'server')"
+							+ "VALUES ('"+playername+"',  '"+sender+"',  '"+warnMessage+"',  '"+currentUnixTime+"',  '"+main.getServerName()+"');");
+				} catch (ClassNotFoundException anEx) {
+					// TODO Auto-generated catch block
+					anEx.printStackTrace();
+				}
 			} catch (SQLException e) {
 				//TODO: add semi-automated error reporting
 				main.logEvent("Serious SQL Error - You should try to update the plugin or report this error to the developer!", false);

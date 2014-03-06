@@ -2,11 +2,13 @@ package ch.theowinter.BloodAST;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
 import org.junit.Test;
 
+import ch.theowinter.BloodAST.modules.PunishmentManager;
 import ch.theowinter.BloodAST.utilities.LogicEngine;
 import ch.theowinter.BloodAST.utilities.SQLEngine;
 
@@ -53,6 +55,7 @@ public class BloodAST_UnitTests {
 		public void testSQLEngine(){
 			if(runDBTests){
 				SQLEngine sql;
+				int insertedRows = 0;
 				try {
 					sql = new SQLEngine("localhost", 8889, "test", "testUser", "password");
 					sql.insertUpdate("DROP TABLE IF EXISTS test; ");
@@ -62,12 +65,32 @@ public class BloodAST_UnitTests {
 							+ "`teste3` INT( 11 ) NOT NULL ,"
 							+ "`test4` INT( 11 ) NOT NULL"
 							+ ") ENGINE = INNODB DEFAULT CHARSET = latin1;");
-					int insertedRows = sql.insertUpdate("INSERT INTO test VALUES ('1', '2', '3', '4');");
-					assertEquals(insertedRows, 1);
+					insertedRows = sql.insertUpdate("INSERT INTO test VALUES ('1', '2', '3', '4');");
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				assertEquals(insertedRows, 1);
+			}
+			else{
+				System.out.println("You've disabled the database tests.");
+			}
+		}
+		
+		/**
+		 * Testing the SQL table setup routine.
+		 */
+		@Test
+		public void testTableSetup(){
+			if(runDBTests){
+				boolean success = false;
+				SQLEngine sql;
+				try {
+					sql = new SQLEngine("localhost", 8889, "test", "testUser", "password");
+					success = sql.setupTables();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				assertTrue(success);
 			}
 			else{
 				System.out.println("You've disabled the database tests.");
@@ -75,24 +98,10 @@ public class BloodAST_UnitTests {
 		}
 		
 		@Test
-		public void testTableSetup(){
-			if(runDBTests){
-				SQLEngine sql;
-				try {
-					sql = new SQLEngine("localhost", 8889, "test", "testUser", "password");
-					sql.setupTables();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-		
-	/*	@Test
 		public void testLogWarningToDB(){
 			PunishmentManager punish = new PunishmentManager(null);
 			punish.logWarning("aerobless", "Herobrine", "not griefing fast enough");
-		}*/
+		}
 		
 		@Test
 		public void testQueryCreator(){
