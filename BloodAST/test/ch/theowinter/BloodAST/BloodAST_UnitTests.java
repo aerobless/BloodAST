@@ -100,7 +100,14 @@ public class BloodAST_UnitTests {
 		@Test
 		public void testLogWarningToDB(){
 			PunishmentManager punish = new PunishmentManager(null);
-			punish.logWarning("aerobless", "Herobrine", "not griefing fast enough");
+			SQLEngine sql;
+			try {
+				sql = new SQLEngine("localhost", 8889, "test", "testUser", "password");
+				punish.logWarning(sql, "aerobless", "Herobrine", "not griefing fast enough", "bCloud");
+			} catch (Exception anEx) {
+				// TODO Auto-generated catch block
+				anEx.printStackTrace();
+			}
 		}
 		
 		@Test

@@ -1,6 +1,7 @@
 package ch.theowinter.BloodAST.modules;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -13,19 +14,11 @@ import ch.theowinter.BloodAST.utilities.SQLEngine;
 
 public class PunishmentManager implements CommandExecutor {
 	private MainBloodAST main;
-	private SQLEngine sql;
+	private SQLEngine sql; //TODO: get SQLEngine
 
 	public PunishmentManager(MainBloodAST mainClass) {
 		super();
 		main = mainClass;
-		if(main.getSQLStatus()){
-			try {
-				sql = new SQLEngine(null, 0, null, null, null);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 	}
 	
 	@Override
@@ -46,7 +39,7 @@ public class PunishmentManager implements CommandExecutor {
         		}
     		}
     	}
-		return true;
+	return true;
 	}
 	
 	public boolean warnPlayer(String sender, String playername, String warnMessage){
@@ -54,33 +47,28 @@ public class PunishmentManager implements CommandExecutor {
 		Player player = main.getServer().getPlayer(playername);
 		if(player != null){
 			player.sendMessage(ChatColor.RED+"DISCIPLINARY WARNING: "+warnMessage);
-			logWarning(sender, playername, warnMessage);
+			try {
+				logWarning(sql, sender, playername, warnMessage, main.getServerName());
+			} catch (SQLException anEx) {
+				main.logEvent("SQL Exception - Are your tables setup correctly?", true);
+				anEx.printStackTrace();
+			}
+			main.logEvent(sender+" has warned "+playername+" with: "+warnMessage, true);
 			success = true;
 		}
 		return success;
 	}
 	
-	public boolean logWarning(String sender, String playername, String warnMessage){
+	public boolean logWarning(SQLEngine sql, String sender, String playername, String warnMessage, String serverName) throws SQLException{
 		boolean success = true;
-		if(main.getSQLStatus()){
-			try {
-				//TODO: make sure injections aren't possible, pre-made statements etc.
-				long currentUnixTime = System.currentTimeMillis() / 1000L;
-				try {
-					sql.insertUpdate("INSERT INTO  '"+sql.getDBName()+"'.'pm_warnings' ("
-							+ "'warned' ,'warned_by' ,'warn_reason' ,'warn_time' ,'server')"
-							+ "VALUES ('"+playername+"',  '"+sender+"',  '"+warnMessage+"',  '"+currentUnixTime+"',  '"+main.getServerName()+"');");
-				} catch (ClassNotFoundException anEx) {
-					// TODO Auto-generated catch block
-					anEx.printStackTrace();
-				}
-			} catch (SQLException e) {
-				//TODO: add semi-automated error reporting
-				main.logEvent("Serious SQL Error - You should try to update the plugin or report this error to the developer!", false);
-				success = false;
-			}
-		}
-		main.logEvent(sender+" has warned "+playername+" with: "+warnMessage, true);
+			long currentUnixTime = System.currentTimeMillis() / 1000L;
+			ArrayList<String[]> data = new ArrayList<String[]>();
+			data.add(new String[] {"warned",playername});
+			data.add(new String[] {"warned_by",sender});
+			data.add(new String[] {"warn_reason",warnMessage});
+			data.add(new String[] {"warn_time",String.valueOf(currentUnixTime)});
+			data.add(new String[] {"server",serverName});
+			sql.runPreparedStatement(sql.insertQueryGenerator("pm_warnings", data), data);
 		return success;
 	}
 
