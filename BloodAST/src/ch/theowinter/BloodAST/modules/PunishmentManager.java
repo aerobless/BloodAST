@@ -22,6 +22,9 @@ public class PunishmentManager implements CommandExecutor {
 		sql = sqlEngine;
 	}
 	
+	/**
+	 * Command Executor:
+	 */
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     	if(cmd.getName().equalsIgnoreCase("warn")){
@@ -37,6 +40,21 @@ public class PunishmentManager implements CommandExecutor {
             		else{
             			sender.sendMessage("Unable to warn "+goodArgs[0]+". Are you sure you spelled his name right?");
             		}
+        		}
+    		}
+    	}
+    	else if(cmd.getName().equalsIgnoreCase("warn")){
+    		String[] goodArgs = main.concatenateArgs(args, 2);
+    		if (main.permAndArgsCheck(sender, "blood.punishment.ban", goodArgs, 2)){
+        		sender.sendMessage("Sorry.. but you can't ban yourself dude.");
+    		}
+    		else{
+    			//TODO: replace warn with ban
+        		if(warnPlayer(sender.getName(), goodArgs[0], goodArgs[1])){
+        			sender.sendMessage("Successfully banned "+args[0]);
+        		}
+        		else{
+        			sender.sendMessage("Unable to ban "+goodArgs[0]+". There is a problem. Please report to your server admin.");
         		}
     		}
     	}
@@ -72,5 +90,14 @@ public class PunishmentManager implements CommandExecutor {
 			sql.runPreparedStatement(sql.insertQueryGenerator("pm_warnings", data), data);
 		return success;
 	}
-
+	
+	public boolean banPlayer(){
+		
+		return false;
+	}
+	
+	public boolean logBan(){
+		
+		return false;
+	}
 }
