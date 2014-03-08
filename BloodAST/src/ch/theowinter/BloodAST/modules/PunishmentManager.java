@@ -27,15 +27,15 @@ public class PunishmentManager implements CommandExecutor {
     	if(cmd.getName().equalsIgnoreCase("warn")){
     		String[] goodArgs = main.concatenateArgs(args, 2);
     		if (main.permAndArgsCheck(sender, "blood.punishment.warn", goodArgs, 2)){
-    		   	if(args[0].equals(sender.getName())){
+    		   	if(goodArgs[0].equals(sender.getName())){
             		sender.sendMessage("Sorry.. but you can't warn yourself dude.");
         		}
         		else{
-            		if(warnPlayer(sender.getName(), args[0], args[1])){
+            		if(warnPlayer(sender.getName(), goodArgs[0], goodArgs[1])){
             			sender.sendMessage("Successfully warned "+args[0]);
             		}
             		else{
-            			sender.sendMessage("Unable to warn "+args[0]+". Are you sure you spelled his name right?");
+            			sender.sendMessage("Unable to warn "+goodArgs[0]+". Are you sure you spelled his name right?");
             		}
         		}
     		}
