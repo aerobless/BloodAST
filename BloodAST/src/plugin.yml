@@ -10,3 +10,6 @@ commands:
    warn:
       description: Warn players when they do something wrong.
       usage: /<command> [player] [warn text]
+   ban:
+      description: Ban players when they do something wrong.
+      usage: /<command> [player] [warn text]

@@ -63,9 +63,6 @@ public class MainBloodAST extends JavaPlugin{
 					anEx.printStackTrace();
 				}
 			}
-			
-			//Saving the config after we've loaded everything to get the newst version down into the file.. it's a test.
-			this.saveConfig();
 	    }
 	 	
 	    @Override

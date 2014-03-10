@@ -22,21 +22,39 @@ public class PunishmentManager implements CommandExecutor {
 		sql = sqlEngine;
 	}
 	
+	/**
+	 * Command Executor:
+	 */
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     	if(cmd.getName().equalsIgnoreCase("warn")){
     		String[] goodArgs = main.concatenateArgs(args, 2);
     		if (main.permAndArgsCheck(sender, "blood.punishment.warn", goodArgs, 2)){
-    		   	if(args[0].equals(sender.getName())){
+    		   	if(goodArgs[0].equals(sender.getName())){
             		sender.sendMessage("Sorry.. but you can't warn yourself dude.");
         		}
         		else{
-            		if(warnPlayer(sender.getName(), args[0], args[1])){
+            		if(warnPlayer(sender.getName(), goodArgs[0], goodArgs[1])){
             			sender.sendMessage("Successfully warned "+args[0]);
             		}
             		else{
-            			sender.sendMessage("Unable to warn "+args[0]+". Are you sure you spelled his name right?");
+            			sender.sendMessage("Unable to warn "+goodArgs[0]+". Are you sure you spelled his name right?");
             		}
+        		}
+    		}
+    	}
+    	else if(cmd.getName().equalsIgnoreCase("warn")){
+    		String[] goodArgs = main.concatenateArgs(args, 2);
+    		if (main.permAndArgsCheck(sender, "blood.punishment.ban", goodArgs, 2)){
+        		sender.sendMessage("Sorry.. but you can't ban yourself dude.");
+    		}
+    		else{
+    			//TODO: replace warn with ban
+        		if(warnPlayer(sender.getName(), goodArgs[0], goodArgs[1])){
+        			sender.sendMessage("Successfully banned "+args[0]);
+        		}
+        		else{
+        			sender.sendMessage("Unable to ban "+goodArgs[0]+". There is a problem. Please report to your server admin.");
         		}
     		}
     	}
@@ -71,5 +89,16 @@ public class PunishmentManager implements CommandExecutor {
 			data.add(new String[] {"server",serverName});
 			sql.runPreparedStatement(sql.insertQueryGenerator("pm_warnings", data), data);
 		return success;
+	}
+
+	
+	public boolean banPlayer(){
+		
+		return false;
+	}
+	
+	public boolean logBan(){
+		
+		return false;
 	}
 }
