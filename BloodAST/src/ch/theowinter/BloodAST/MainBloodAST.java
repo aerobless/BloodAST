@@ -67,7 +67,7 @@ public class MainBloodAST extends JavaPlugin{
 			//Saving the config after we've loaded everything to get the newst version down into the file.. it's a test.
 			this.saveConfig();
 	    }
-	 
+	 	
 	    @Override
 	    public void onDisable() {
 	    	logEvent("BloodAST successfully exited", true);
@@ -190,5 +190,4 @@ public class MainBloodAST extends JavaPlugin{
 			SQLEngine sql = new SQLEngine(host, port, database, username, password);
 			return sql;
 		}
-
 }

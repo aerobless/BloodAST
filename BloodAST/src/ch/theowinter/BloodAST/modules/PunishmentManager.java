@@ -72,5 +72,4 @@ public class PunishmentManager implements CommandExecutor {
 			sql.runPreparedStatement(sql.insertQueryGenerator("pm_warnings", data), data);
 		return success;
 	}
-
 }
